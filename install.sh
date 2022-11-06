@@ -4,8 +4,8 @@
 # Locally-installed programs go here.
 mkdir ~/.local/bin -p
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH="$HOME/local/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc
-echo 'export MANPATH="$HOME/local/share/man:$MANPATH"' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc
+echo 'export MANPATH="$HOME/.local/share/man:$MANPATH"' >> ~/.bashrc
 
 # tmux latest version
 cd ~/.local/bin
