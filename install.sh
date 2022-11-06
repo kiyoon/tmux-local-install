@@ -1,13 +1,34 @@
 #!/bin/bash
 # Install tmux locally without root access
 
+add_env_to_profile() {
+	file="$1"
+	envname="$2"
+	envval="$3"
+	value_extracted=$(eval echo "$envval")
+
+	current_value=$(eval "echo \$$envname")
+
+	if [[ :"$current_value": != *:"$value_extracted":* ]]
+	then
+		echo "export $envname=\"$envval:\$$envname\"" >> "$file"
+	fi
+}
+
+add_line_to_profile() {
+	file="$1"
+	line="$2"
+
+	grep -qF -- "$line" "$file" || echo "$line" >> "$file"
+}
+
 # Locally-installed programs go here.
-mkdir ~/.local/bin -p
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc
-echo 'export MANPATH="$HOME/.local/share/man:$MANPATH"' >> ~/.bashrc
+add_env_to_profile ~/.bashrc 'PATH' '$HOME/.local/bin'
+add_env_to_profile ~/.bashrc 'LD_LIBRARY_PATH' '$HOME/.local/lib'
+add_env_to_profile ~/.bashrc 'MANPATH' '$HOME/.local/share/man'
 
 # tmux latest version
+mkdir ~/.local/bin -p
 cd ~/.local/bin
 curl -s https://api.github.com/repos/kiyoon/tmux-appimage/releases/latest \
 | grep "browser_download_url.*appimage" \
@@ -17,11 +38,12 @@ curl -s https://api.github.com/repos/kiyoon/tmux-appimage/releases/latest \
 && chmod +x tmux.appimage
 ./tmux.appimage --appimage-extract
 rsync -a squashfs-root/usr/ ~/.local/
-rm ~/.local/bin/tmux.appimage
+rm tmux.appimage
 rm -rf squashfs-root
-echo 'export TERMINFO="$HOME/.local/share/terminfo"  # tmux needs this' >> ~/.bashrc
+add_line_to_profile ~/.bashrc 'export TERMINFO="$HOME/.local/share/terminfo"  # tmux needs this'
+
+cd -
+\source ~/.bashrc
 
 echo "tmux installed at $HOME/.local/bin/tmux"
-echo "Run:"
-echo "source ~/.bashrc"
-echo "Or start a new shell."
+echo "Run 'tmux' to start tmux."
