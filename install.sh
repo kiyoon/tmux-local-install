@@ -20,3 +20,8 @@ rsync -a squashfs-root/usr/ ~/.local/
 rm ~/.local/bin/tmux.appimage
 rm -rf squashfs-root
 echo 'export TERMINFO="$HOME/.local/share/terminfo"  # tmux needs this' >> ~/.bashrc
+
+echo "tmux installed at $HOME/.local/bin/tmux"
+echo "Run:"
+echo "source ~/.bashrc"
+echo "Or start a new shell."
