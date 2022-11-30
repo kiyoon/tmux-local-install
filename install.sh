@@ -26,6 +26,9 @@ add_line_to_profile() {
 add_env_to_profile ~/.bashrc 'PATH' '$HOME/.local/bin'
 add_env_to_profile ~/.bashrc 'LD_LIBRARY_PATH' '$HOME/.local/lib'
 add_env_to_profile ~/.bashrc 'MANPATH' '$HOME/.local/share/man'
+add_env_to_profile ~/.zshrc 'PATH' '$HOME/.local/bin'
+add_env_to_profile ~/.zshrc 'LD_LIBRARY_PATH' '$HOME/.local/lib'
+add_env_to_profile ~/.zshrc 'MANPATH' '$HOME/.local/share/man'
 
 # tmux latest version
 mkdir ~/.local/bin -p
@@ -41,6 +44,7 @@ rsync -a squashfs-root/usr/ ~/.local/
 rm tmux.appimage
 rm -rf squashfs-root
 add_line_to_profile ~/.bashrc 'export TERMINFO="$HOME/.local/share/terminfo"  # tmux needs this'
+add_line_to_profile ~/.zshrc 'export TERMINFO="$HOME/.local/share/terminfo"  # tmux needs this'
 
 cd -
 \source ~/.bashrc
